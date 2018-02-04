@@ -7,9 +7,9 @@ using TestApp1;
 
 namespace TestConsoleApp
 {
-    public class ThrowAwayGradeGradeBook: GradeBook
+    public class ThrowAwayGradeBook: GradeBook
     {
-        public GradeStatistics ComputeStatistics()
+        public override GradeStatistics ComputeStatistics()
         {
             Console.WriteLine("ThrowAwayGradeBook::ComputeStatistics");
 

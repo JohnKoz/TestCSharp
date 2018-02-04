@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using TestConsoleApp;
 
 namespace TestApp1
 {
-    public class GradeBook
+    public class GradeBook : GradeTracker
     {
         public GradeBook() //Constructor
         {
@@ -15,7 +16,7 @@ namespace TestApp1
 
 
 
-        public GradeStatistics ComputeStatistics()
+        public override GradeStatistics ComputeStatistics()
         {
             GradeStatistics stats = new GradeStatistics();
             Console.WriteLine("GradeBook::ComputeStatistics");
@@ -32,9 +33,7 @@ namespace TestApp1
         }
 
 
-
-
-        public void WriteGrades(TextWriter destination)
+        public override void WriteGrades(TextWriter destination)
         {
             for (int i = grades.Count; i > 0; i--)
             {
@@ -43,40 +42,14 @@ namespace TestApp1
         }
 
 
-
-
-        public void addGrade(float grade)
+        public override void AddGrade(float grade)
         {
             grades.Add(grade);
         }
-
-
-
-        public string Name //Name is a public member
+        public override IEnumerator GetEnumerator()
         {
-            get
-            {
-                return _name;
-            }
-            set
-            {
-                if (String.IsNullOrEmpty(value))
-                {
-                    throw new ArgumentException("Name cannot be null or empty");
-                }
-                if (_name != value && NameChanged != null)
-                {
-                    NameChangedEventArgs args = new NameChangedEventArgs();
-                    args.ExistingName = _name;
-                    args.NewName = value;
-                    NameChanged(this, args);
-                }
-                _name = value;
-
-            }
+            return grades.GetEnumerator();
         }
-        public event NameChangedDelegate NameChanged; //Reference Types
-        private string _name;
-        public List<float> grades;
+        protected List<float> grades;
     }
 }

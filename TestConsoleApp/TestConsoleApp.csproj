@@ -50,7 +50,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ThrowAwayGradeGradeBook.cs" />
+    <Compile Include="GradeTracker.cs" />
+    <Compile Include="IGradeTracker.cs" />
+    <Compile Include="ThrowAwayGradeBook.cs" />
     <Compile Include="GradeBook.cs" />
     <Compile Include="GradeStatistics.cs" />
     <Compile Include="NameChangedDelegate.cs" />

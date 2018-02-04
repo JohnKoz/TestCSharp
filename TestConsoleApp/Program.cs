@@ -8,8 +8,7 @@ namespace TestApp1
     {
         public static void Main(string[] args)
         {
-
-            GradeBook book = new ThrowAwayGradeGradeBook();
+            IGradeTracker book = CreateGradeBook();
 
             //book.NameChanged += onNameChanged; --Delegate Example
             GetBookName(book);
@@ -18,8 +17,27 @@ namespace TestApp1
             WriteResults(book);
         }
 
+        private static IGradeTracker CreateGradeBook()
+        {
+            return new ThrowAwayGradeBook();
+        }
 
-        private static void SaveGrades(GradeBook book)
+        private static void WriteResults(IGradeTracker book)
+        {
+            GradeStatistics stats = book.ComputeStatistics();
+
+            foreach (float grade in book)
+            {
+                Console.WriteLine(grade);
+            }
+
+            WriteResult("Average", stats.averageGrade);
+            WriteResult("Highest", (int)stats.highestGrade);
+            WriteResult("Grade", stats.LetterGrade);
+            WriteResult(stats.Description, stats.LetterGrade);
+        }
+
+        private static void SaveGrades(IGradeTracker book)
         {
             using (StreamWriter outputfile = File.CreateText("grades.txt"))
             {
@@ -27,28 +45,21 @@ namespace TestApp1
             }
         }
 
-        private static void WriteResults(GradeBook book)
+        
+
+        private static void AddGrades(IGradeTracker book)
         {
-            GradeStatistics stats = book.ComputeStatistics();
-            WriteResult("Average", stats.averageGrade);
-            WriteResult("Highest", (int)stats.highestGrade);
-            WriteResult("Grade", stats.LetterGrade);
-            WriteResult(stats.Description, stats.LetterGrade);
+            book.AddGrade(91);
+            book.AddGrade(89.5f);
+            book.AddGrade(75);
         }
 
-        private static void AddGrades(GradeBook book)
-        {
-            book.addGrade(91);
-            book.addGrade(89.5f);
-            book.addGrade(75);
-        }
-
-        private static void GetBookName(GradeBook book)
+        private static void GetBookName(IGradeTracker book)
         {
             try
             {
                 //Console.WriteLine("Enter a name");
-               // book.Name = Console.ReadLine();
+               book.Name = Console.ReadLine();
 
             }
             catch (ArgumentException ex)
